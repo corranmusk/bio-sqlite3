@@ -7,7 +7,6 @@ static void cgContentFunc(
   sqlite3_value **argv
 ){
   int gc_count;
-  int i;
   int ct;
   double result;
 
