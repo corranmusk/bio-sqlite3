@@ -1,0 +1,3 @@
+List of functions provided by the library:
+
+CGCONTENT	Provides %content of C+G
