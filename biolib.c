@@ -6,7 +6,17 @@ static void cgContentFunc(
   int argc,
   sqlite3_value **argv
 ){
-  sqlite3_result_double(context, 0.5*sqlite3_value_double(argv[0]));
+  int gc_count;
+  int i;
+  int ct;
+  double result;
+
+  gc_count=100;
+  ct=2000;
+  result=(double) gc_count/(double) ct;
+  
+/*sqlite3_value_text(argv[0])*/
+  sqlite3_result_double(context, result);
 }
 
 /* SQLite invokes this routine once when it loads the extension.
