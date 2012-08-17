@@ -1,4 +1,6 @@
 #include <sqlite3ext.h>
+#include <assert.h>
+
 SQLITE_EXTENSION_INIT1
 
 static void cgContentFunc(
@@ -6,16 +8,31 @@ static void cgContentFunc(
   int argc,
   sqlite3_value **argv
 ){
-  int gc_count;
-  int ct;
+  int cg_count, ct, i;
   double result;
+  unsigned char *z;
 
-  gc_count=100;
-  ct=2000;
-  result=(double) gc_count/(double) ct;
-  
-/*sqlite3_value_text(argv[0])*/
-  sqlite3_result_double(context, result);
+  assert (argc==1);
+  switch( sqlite3_value_type(argv[0]) ){
+    case SQLITE_TEXT:{
+      z = sqlite3_malloc(sqlite3_value_bytes(argv[0])+1);
+      strcpy((char*)z,(char*)sqlite3_value_text(argv[0]));
+      cg_count=0;
+      ct=0;
+      for(i=0; z[i]; i++){
+        ct++;
+        if(toupper(z[i])=='C') cg_count++;
+        if(toupper(z[i])=='G') cg_count++;
+      }
+      result=(double) cg_count/(double) ct;
+      sqlite3_result_double(context, result);
+      break;
+    }
+    default: {
+      sqlite3_result_null(context);
+      break;
+    }
+  }
 }
 
 /* SQLite invokes this routine once when it loads the extension.
