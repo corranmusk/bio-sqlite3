@@ -11,7 +11,8 @@ static void cgContentFunc(
   int cg_count, ct, i;
   double result;
   unsigned char *z;
-
+  char t;
+/* still need to deal with empty string */
   assert (argc==1);
   switch( sqlite3_value_type(argv[0]) ){
     case SQLITE_TEXT:{
@@ -21,11 +22,13 @@ static void cgContentFunc(
       ct=0;
       for(i=0; z[i]; i++){
         ct++;
-        if(toupper(z[i])=='C') cg_count++;
-        if(toupper(z[i])=='G') cg_count++;
+	t=toupper(z[i]);
+        if(t=='C') cg_count++;
+        if(t=='G') cg_count++;
       }
       result=(double) cg_count/(double) ct;
       sqlite3_result_double(context, result);
+      sqlite3_free(z);
       break;
     }
     default: {
