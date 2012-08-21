@@ -101,7 +101,24 @@ static void HammingDistFunc(
 }
 
 
-
+static void LevenshteinDistFunc(
+		sqlite3_context	*context,
+		int 			argc,
+		sqlite3_value 	**argv
+){
+	int		result;
+	unsigned char 	*z0, *z1;
+	
+	assert (argc==2);
+	z0 = sqlite3_malloc(sqlite3_value_bytes(argv[0])+1);
+	strcpy((char*)z0,(char*)sqlite3_value_text(argv[0]));
+	z1 = sqlite3_malloc(sqlite3_value_bytes(argv[1])+1);
+	strcpy((char*)z1,(char*)sqlite3_value_text(argv[1]));
+	result=libLevenshteinDistFunc(z0,z1);
+	sqlite3_result_int(context, result);
+	sqlite3_free(z0);
+	sqlite3_free(z1);
+}
 
 /* SQLite invokes this routine once when it loads the extension.
 ** Create new functions, collating sequences, and virtual table
@@ -115,9 +132,12 @@ int sqlite3_extension_init(
 ){
 		SQLITE_EXTENSION_INIT2(pApi)
 		sqlite3_create_function(db, "cgcontent", 1, SQLITE_ANY, 0, cgContentFunc, 0, 0);
-		/* alias for cgcontent - gccontent */
+		// alias for cgcontent - gccontent
 		sqlite3_create_function(db, "gccontent", 1, SQLITE_ANY, 0, cgContentFunc, 0, 0);
 		sqlite3_create_function(db, "molwt", 1, SQLITE_ANY, 0, MolWTFunc, 0, 0);
 		sqlite3_create_function(db, "hammingdist", 2, SQLITE_ANY, 0, HammingDistFunc, 0, 0);
+		sqlite3_create_function(db, "levenshteindist", 2, SQLITE_ANY, 0, LevenshteinDistFunc, 0, 0);
+		//alias for levensteindist - levdist
+		sqlite3_create_function(db, "levdist", 2, SQLITE_ANY, 0, LevenshteinDistFunc, 0, 0);
 		return 0;
 }

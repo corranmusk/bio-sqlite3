@@ -78,9 +78,14 @@ double libMolWTFunc(unsigned char *sequence)
 
 int libHammingDistFunc(unsigned char *seq1, unsigned char *seq2)
 {
+	// Calculates Hamming distance, returns -1 if strings are different lengths
+	// Requires 2 strings for comparison, ignores case
+
 	int 	result,i;
 
-	if (strlen(seq1)!=strlen(seq2)){ 
+	// Check string lengths
+	if (strlen(seq1)!=strlen(seq2)){
+		// Different so result is -1 
 		result=-1;
 	} else {
 		result=0;
@@ -91,4 +96,40 @@ int libHammingDistFunc(unsigned char *seq1, unsigned char *seq2)
 	return result;
 }
 
+int libLevenshteinDistFunc (char *seq1, char *seq2) {
+
+	int min( int a, int b ){ return ( a < b ) ? a : b;}
+
+	int la = strlen ( seq1 );
+	int lb = strlen ( seq2 );
+
+	if( la == 0 ) return lb;
+	if( lb == 0 ) return la;
+	if( la > lb ) {
+		return libLevenshteinDistFunc ( seq2, seq1 );
+	}else{
+
+		int current[ la + 1 ];
+		int previous[ la + 1 ];
+		int i,j;
+
+		for( i = 0; i < ( la + 1 ); i++ ) {
+			current[ i ]= i;
+		}
+
+		int x, y, z;
+		for ( j = 1;  j < ( lb + 1 ); j++ ) {
+			previous[ 0 ] = current[ 0 ];
+			current[ 0 ] = j;
+			for ( i = 1; i < ( la + 1 ); i++ ) {
+				previous[ i ] = current[ i ];
+				x = current[ i ] + 1;
+				y = current[ i - 1 ] + 1;
+				z = previous[ i - 1 ] + ( (toupper(seq1[i-1]) == toupper(seq2[j-1]) ) ? 0 : 1 );
+				current[ i ] = min ( x , min ( y , z ) );
+			}
+		}
+		return current[ la ];
+	}
+}
 
