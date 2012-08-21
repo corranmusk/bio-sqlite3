@@ -100,7 +100,7 @@ int libLevenshteinDistFunc (char *seq1, char *seq2) {
 // Calculates Levenshtein Distance between two sequences
 // Note that it ignores case
 
-	// Function to calculate minimum between two integers
+	// Function to return the minimum of two integers
 	int min( int a, int b ){ return ( a < b ) ? a : b;}
 	// Calculate length of strings;
 	int la = strlen ( seq1 );

@@ -14,4 +14,4 @@ Files:
 	Makefile	Makefile to make the library
 	biolib.c (.h)	The base library containing the functions
 	biolib_sqlite3.c	Allows the functions to be used in sqlite3	
-
+	words.db	A sqlite database containing some words for testing
