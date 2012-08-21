@@ -97,28 +97,33 @@ int libHammingDistFunc(unsigned char *seq1, unsigned char *seq2)
 }
 
 int libLevenshteinDistFunc (char *seq1, char *seq2) {
+// Calculates Levenshtein Distance between two sequences
+// Note that it ignores case
 
+	// Function to calculate minimum between two integers
 	int min( int a, int b ){ return ( a < b ) ? a : b;}
-
+	// Calculate length of strings;
 	int la = strlen ( seq1 );
 	int lb = strlen ( seq2 );
-
+	// Check that strings aren't empty...
 	if( la == 0 ) return lb;
 	if( lb == 0 ) return la;
+	// ...and that seq1 is longer than seq2
 	if( la > lb ) {
 		return libLevenshteinDistFunc ( seq2, seq1 );
 	}else{
-
+		// set up vars
 		int current[ la + 1 ];
 		int previous[ la + 1 ];
 		int i,j;
-
+		// set-up initial state
 		for( i = 0; i < ( la + 1 ); i++ ) {
 			current[ i ]= i;
 		}
-
+		// Main calculation loop
 		int x, y, z;
 		for ( j = 1;  j < ( lb + 1 ); j++ ) {
+			// Move down a row at a time
 			previous[ 0 ] = current[ 0 ];
 			current[ 0 ] = j;
 			for ( i = 1; i < ( la + 1 ); i++ ) {
