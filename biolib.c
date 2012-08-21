@@ -24,7 +24,6 @@ double libcgContentFunc(unsigned char *z)
 	double 			result;
 	char 			t;
 	
-/* still need to deal with empty string */
 	cg_count=0;
 	ct=0;
 	for(i=0; z[i]; i++){

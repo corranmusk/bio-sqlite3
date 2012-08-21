@@ -1,4 +1,8 @@
 List of functions provided by the library:
 
-CGCONTENT	Provides %content of C+G
-MOLWT		Calculates the Molecular weight in Daltons of a DNA seq.
+CGCONTENT(seq)	Provides %content of C+G
+GCCONTENT(seq)	Alias for CGCONTENT
+MOLWT(seq)	Calculates the Molecular weight in Daltons of a DNA seq.
+
+Notes:
+	seq is a sequence in text format.

@@ -1,8 +1,8 @@
 To make the library:
 	make
 
-To use the library:
+To use the library in sqlite3:
 	start sqlite3
 	at the sqlite3 prompt type:
-		.load biolib
+		.load ./biolib_sqlite3
 
