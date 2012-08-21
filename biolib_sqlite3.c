@@ -15,6 +15,7 @@ Functions to be implemented:
 #include <sqlite3ext.h>
 #include <assert.h>
 #include "biolib.h"
+#include <string.h>
 
 SQLITE_EXTENSION_INIT1
 
@@ -26,10 +27,8 @@ static void cgContentFunc(
 		int argc,
 		sqlite3_value **argv
 ){
-	int 			cg_count, ct, i;
-	double 			result;
+	double 		result;
 	unsigned char 	*z;
-	char 			t;
 	
 /* still need to deal with empty string */
 	assert (argc==1);
@@ -57,10 +56,8 @@ static void MolWTFunc(
 		int 			argc,
 		sqlite3_value 	**argv
 ){
-	int 			i;
-	double			result;
+	double		result;
 	unsigned char 	*z;
-	char 			t;
 	
 	assert (argc==1);
 	switch( sqlite3_value_type(argv[0]) ){
@@ -77,6 +74,30 @@ static void MolWTFunc(
 			break;
 		}
 	}
+}
+
+
+static void HammingDistFunc(
+		sqlite3_context	*context,
+		int 			argc,
+		sqlite3_value 	**argv
+){
+	int		result;
+	unsigned char 	*z0, *z1;
+	
+	assert (argc==2);
+	z0 = sqlite3_malloc(sqlite3_value_bytes(argv[0])+1);
+	strcpy((char*)z0,(char*)sqlite3_value_text(argv[0]));
+	z1 = sqlite3_malloc(sqlite3_value_bytes(argv[1])+1);
+	strcpy((char*)z1,(char*)sqlite3_value_text(argv[1]));
+	result=libHammingDistFunc(z0,z1);
+	if (result==-1){
+		sqlite3_result_null(context);
+	} else {
+		sqlite3_result_int(context, result);
+	}
+	sqlite3_free(z0);
+	sqlite3_free(z1);
 }
 
 
@@ -97,5 +118,6 @@ int sqlite3_extension_init(
 		/* alias for cgcontent - gccontent */
 		sqlite3_create_function(db, "gccontent", 1, SQLITE_ANY, 0, cgContentFunc, 0, 0);
 		sqlite3_create_function(db, "molwt", 1, SQLITE_ANY, 0, MolWTFunc, 0, 0);
+		sqlite3_create_function(db, "hammingdist", 2, SQLITE_ANY, 0, HammingDistFunc, 0, 0);
 		return 0;
 }

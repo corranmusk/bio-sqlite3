@@ -18,6 +18,10 @@ Functions to be implemented:
 	 requires a string
 	 returns a double
 */
+
+#include <string.h>
+
+
 double libcgContentFunc(unsigned char *z)
 {
 	int 			cg_count, ct, i;
@@ -72,6 +76,19 @@ double libMolWTFunc(unsigned char *sequence)
 	return result;
 }
 
+int libHammingDistFunc(unsigned char *seq1, unsigned char *seq2)
+{
+	int 	result,i;
 
+	if (strlen(seq1)!=strlen(seq2)){ 
+		result=-1;
+	} else {
+		result=0;
+		for(i=0; i<strlen(seq1); i++){
+			if (toupper(seq1[i])==toupper(seq2[i])) ++result;
+		}
+	}
+	return result;
+}
 
 
