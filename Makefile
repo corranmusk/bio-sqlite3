@@ -7,13 +7,13 @@ SQLITE_OBJS= biolib.o biolib_sqlite3.o
 all : biolib_sqlite3 biolib.o
 
 biolib_sqlite3 : $(SQLITE_OBJS)
-	$(CC) -shared -o biolib_sqlite3 $(SQLITE_OBJS)
+	$(CC) -shared -fPIC -o biolib_sqlite3 $(SQLITE_OBJS)
 
 biolib_sqlite3.o : biolib_sqlite3.c
 	$(CC) -shared -fPIC -Isqlite3 -c biolib_sqlite3.c
 
-biolib.o : biolib.c
-	$(CC) -c biolib.c
+biolib.o : biolib.c biolib.h
+	$(CC) -fPIC -c biolib.c
 
 clean :
 	rm -f biolib_sqlite3 *.o

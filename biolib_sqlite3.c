@@ -37,15 +37,7 @@ static void cgContentFunc(
 		case SQLITE_TEXT:{
 			z = sqlite3_malloc(sqlite3_value_bytes(argv[0])+1);
 			strcpy((char*)z,(char*)sqlite3_value_text(argv[0]));
-			cg_count=0;
-			ct=0;
-			for(i=0; z[i]; i++){
-				ct++;
-				t=toupper(z[i]);
-				if(t=='C') cg_count++;
-				if(t=='G') cg_count++;
-			}
-			result=(double) cg_count/(double) ct;
+			result=libcgContentFunc(z);
 			sqlite3_result_double(context, result);
 			sqlite3_free(z);
 			break;
@@ -75,28 +67,7 @@ static void MolWTFunc(
 		case SQLITE_TEXT:{
 			z = sqlite3_malloc(sqlite3_value_bytes(argv[0])+1);
 			strcpy((char*)z,(char*)sqlite3_value_text(argv[0]));
-			result=0.0;
-			for(i=0; z[i]; i++){
-				t=toupper(z[i]);
-				switch (t) {
-					case 'C':{
-						result+=289.2;
-						break;
-					}
-					case 'A':{
-						result+=313.2;
-						break;
-					}
-					case 'G':{
-						result+=329.2;
-						break;
-					}
-					case 'T':{
-						result+=304.2;
-						break;
-					}
-				}
-			}
+			result=libMolWTFunc(z);
 			sqlite3_result_double(context, result);
 			sqlite3_free(z);
 			break;

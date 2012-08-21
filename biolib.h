@@ -18,14 +18,14 @@ Functions to be implemented:
 	 requires a string
 	 returns a double
 */
-static void cgContentFunc();
+extern double libcgContentFunc(char * sequence);
 
 /* Molwt Function
   Calculates the Molecular Weight in Daltons of the specified DNA sequence
 	requires a string
 	returns a double
 */
-static void MolWTFunc();
+extern double libMolWTFunc(char *sequence);
 
 
 
