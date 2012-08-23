@@ -5,6 +5,7 @@ CC=gcc
 SQLITE_OBJS= biolib.o biolib_sqlite3.o
 
 all : biolib_sqlite3 biolib.o
+	sqlite3 < test.sqlite
 
 biolib_sqlite3 : $(SQLITE_OBJS)
 	$(CC) -shared -fPIC -o biolib_sqlite3 $(SQLITE_OBJS)

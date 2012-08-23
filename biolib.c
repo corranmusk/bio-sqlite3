@@ -4,7 +4,6 @@ A library of bioinformatic functions
 Corran C. Musk 2012
 
 Functions to be implemented:
-	reverse
 	compliment
 	revcomp (reverse and compliment)
 	translateDNAtoProtein(frame) (if neg uses reverse)
@@ -12,27 +11,89 @@ Functions to be implemented:
 	align
 */
 
-
-/* cgcontent function
-  calculate the proportion of C+G of a given dna sequence
-	 requires a string
-	 returns a double
-*/
-
 #include <string.h>
+#include <stdlib.h>
+
+/* ReverseFunc : reverses a string
+	requires pointer to string
+*/
 
 void libReverseFunc(char *str)
 {
 	char *tmp_str;
 	int i,str_len;
 
+	tmp_str=malloc(strlen(str));
 	strcpy(tmp_str,str);
 	str_len=strlen(tmp_str)-1;
 	for (i=0; i<=str_len; ++i){
 		str[i]=tmp_str[str_len-i];
 	}
+	free(tmp_str);
 
 }
+
+/* ComplimentDNAFunc : Compliments DNA, preserves case
+	requires pointer to str to be complimented
+*/
+
+void libCompDNAFunc(char *str)
+{
+	char *tmp_str;
+	int i,str_len;
+
+	tmp_str=malloc(strlen(str));
+	strcpy(tmp_str,str);
+	str_len=strlen(tmp_str);
+	for (i=0; i<str_len; ++i){
+		switch (tmp_str[i]){
+			case 'a':
+				str[i]='t';
+				break;
+			case 'A':
+				str[i]='T';
+				break;
+			case 'g':
+				str[i]='c';
+				break;
+			case 'G':
+				str[i]='C';
+				break;
+			case 'c':
+				str[i]='g';
+				break;
+			case 'C':
+				str[i]='G';
+				break;
+			case 't':
+				str[i]='a';
+				break;
+			case 'T':
+				str[i]='A';
+				break;
+			default:
+				str[i]=tmp_str[i];
+		}
+	}
+	free(tmp_str);
+}
+
+/* comprev : reverses and compliments a DNA sequence
+	requires pointer to string
+*/
+
+void libCompRevFunc(char *seq)
+{
+	libReverseFunc(seq);
+	libCompDNAFunc(seq);
+}
+
+
+/* cgcontentFunc : calculate the proportion of C+G of a given dna sequence
+	 requires a string
+	 returns a double
+*/
+
 double libcgContentFunc(unsigned char *z)
 {
 	int 			cg_count, ct, i;
@@ -51,11 +112,11 @@ double libcgContentFunc(unsigned char *z)
 	return result;
 }
 
-/* Molwt Function
-  Calculates the Molecular Weight in Daltons of the specified DNA sequence
+/* MolWTFunc : Calculates the Molecular Weight in Daltons of the specified DNA sequence
 	requires a string
 	returns a double
 */
+
 double libMolWTFunc(unsigned char *sequence)
 {
 	int 			i;
@@ -87,10 +148,13 @@ double libMolWTFunc(unsigned char *sequence)
 	return result;
 }
 
+/* HammingDistFunc : Calculates Hamming distance 
+	Requires 2 strings for comparison, ignores case
+	returns -1 if strings are different lengths otherwise calculates Hamming distance
+*/
+
 int libHammingDistFunc(unsigned char *seq1, unsigned char *seq2)
 {
-	// Calculates Hamming distance, returns -1 if strings are different lengths
-	// Requires 2 strings for comparison, ignores case
 
 	int 	result,i;
 
@@ -107,9 +171,12 @@ int libHammingDistFunc(unsigned char *seq1, unsigned char *seq2)
 	return result;
 }
 
+/* LevenshteinDistFunc : Calculates Levenshtein distance 
+	Requires 2 strings for comparison, ignores case
+	returns calculated Levenshtein distance
+*/
+
 int libLevenshteinDistFunc (char *seq1, char *seq2) {
-// Calculates Levenshtein Distance between two sequences
-// Note that it ignores case
 
 	// Function to return the minimum of two integers
 	int min( int a, int b ){ return ( a < b ) ? a : b;}

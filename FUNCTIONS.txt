@@ -7,6 +7,8 @@ HAMMINGDIST(seq,seq) 	Caluclates the Hamming distance for two sequence, returns 
 LEVSHTIENDIST(seq,seq) 	Calculates the Levenshtein distance for a pair of sequences.
 LEVDIST(seq,seq) 	Alias for LENSHTEINDIST
 REVSEQ(seq)		Reverses a sequence
+COMPDNA(seq)		Compliments a DNA sequence;
+REVCOMP(seq)		Reverses and Compliments a DNA sequence i.e. other strand;
 
 Notes:
 	seq is a sequence in text format.
