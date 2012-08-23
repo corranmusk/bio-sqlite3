@@ -13,9 +13,9 @@ Functions to be implemented:
 */
 
 #include <sqlite3ext.h>
-#include <assert.h>
 #include "biolib.h"
 #include <string.h>
+#include <stdlib.h>
 
 SQLITE_EXTENSION_INIT1
 
@@ -31,7 +31,6 @@ static void cgContentFunc(
 	unsigned char 	*z;
 	
 /* still need to deal with empty string */
-	assert (argc==1);
 	switch( sqlite3_value_type(argv[0]) ){
 		case SQLITE_TEXT:{
 			z = sqlite3_malloc(sqlite3_value_bytes(argv[0])+1);
@@ -59,7 +58,6 @@ static void MolWTFunc(
 	double		result;
 	unsigned char 	*z;
 	
-	assert (argc==1);
 	switch( sqlite3_value_type(argv[0]) ){
 		case SQLITE_TEXT:{
 			z = sqlite3_malloc(sqlite3_value_bytes(argv[0])+1);
@@ -85,7 +83,6 @@ static void HammingDistFunc(
 	int		result;
 	unsigned char 	*z0, *z1;
 	
-	assert (argc==2);
 	z0 = sqlite3_malloc(sqlite3_value_bytes(argv[0])+1);
 	strcpy((char*)z0,(char*)sqlite3_value_text(argv[0]));
 	z1 = sqlite3_malloc(sqlite3_value_bytes(argv[1])+1);
@@ -109,7 +106,6 @@ static void LevenshteinDistFunc(
 	int		result;
 	unsigned char 	*z0, *z1;
 	
-	assert (argc==2);
 	z0 = sqlite3_malloc(sqlite3_value_bytes(argv[0])+1);
 	strcpy((char*)z0,(char*)sqlite3_value_text(argv[0]));
 	z1 = sqlite3_malloc(sqlite3_value_bytes(argv[1])+1);
@@ -119,6 +115,30 @@ static void LevenshteinDistFunc(
 	sqlite3_free(z0);
 	sqlite3_free(z1);
 }
+
+static void ReverseFunc(
+		sqlite3_context	*context,
+		int 			argc,
+		sqlite3_value 	**argv
+){
+	unsigned char 	*z;
+	
+	switch( sqlite3_value_type(argv[0]) ){
+		case SQLITE_TEXT:{
+			z = sqlite3_malloc(sqlite3_value_bytes(argv[0])+1);
+			strcpy((char*)z,(char*)sqlite3_value_text(argv[0]));
+			libReverseFunc(z);
+			sqlite3_result_text(context, z,strlen(z),NULL);
+			sqlite3_free(z);
+			break;
+		}
+		default: {
+			sqlite3_result_null(context);
+			break;
+		}
+	}
+}
+
 
 /* SQLite invokes this routine once when it loads the extension.
 ** Create new functions, collating sequences, and virtual table
@@ -139,5 +159,5 @@ int sqlite3_extension_init(
 		sqlite3_create_function(db, "levenshteindist", 2, SQLITE_ANY, 0, LevenshteinDistFunc, 0, 0);
 		//alias for levensteindist - levdist
 		sqlite3_create_function(db, "levdist", 2, SQLITE_ANY, 0, LevenshteinDistFunc, 0, 0);
-		return 0;
+		sqlite3_create_function(db, "revseq", 1, SQLITE_ANY, 0, ReverseFunc, 0, 0);		return 0;
 }

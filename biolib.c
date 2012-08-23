@@ -21,7 +21,18 @@ Functions to be implemented:
 
 #include <string.h>
 
+void libReverseFunc(char *str)
+{
+	char *tmp_str;
+	int i,str_len;
 
+	strcpy(tmp_str,str);
+	str_len=strlen(tmp_str)-1;
+	for (i=0; i<=str_len; ++i){
+		str[i]=tmp_str[str_len-i];
+	}
+
+}
 double libcgContentFunc(unsigned char *z)
 {
 	int 			cg_count, ct, i;

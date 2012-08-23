@@ -1,11 +1,12 @@
 List of functions provided by the library:
 
-CGCONTENT(seq)	Provides %content of C+G
-GCCONTENT(seq)	Alias for CGCONTENT
-MOLWT(seq)	Calculates the Molecular weight in Daltons of a DNA seq.
-HAMMINGDIST(seq,seq) Caluclates the Hamming distance for two sequence, returns null if sequences are different lengths
-LEVSHTIENDIST(seq,seq) Calculates the Levenshtein distance for a pair of sequences.
-LEVDIST(seq,seq) Alias for LENSHTEINDIST
+CGCONTENT(seq)		Provides %content of C+G
+GCCONTENT(seq)		Alias for CGCONTENT
+MOLWT(seq)		Calculates the Molecular weight in Daltons of a DNA seq.
+HAMMINGDIST(seq,seq) 	Caluclates the Hamming distance for two sequence, returns null if sequences are different lengths
+LEVSHTIENDIST(seq,seq) 	Calculates the Levenshtein distance for a pair of sequences.
+LEVDIST(seq,seq) 	Alias for LENSHTEINDIST
+REVSEQ(seq)		Reverses a sequence
 
 Notes:
 	seq is a sequence in text format.

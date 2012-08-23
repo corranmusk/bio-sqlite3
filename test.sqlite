@@ -1,0 +1,8 @@
+.load ./biolib_sqlite3
+select cgcontent("acgtagctatgctactagc");
+select gccontent("acgtagctatgctactagc");
+select molwt("acgtagctatgctactagc");
+select hammingdist("acgtagctatgctactagc","acgtagctatgctacgcta");
+select levenshteindist("acgtagctatgctactagc","acgtagctatgctacgcta");
+select levdist("acgtagctatgctactagc","acgtagctatgctacgcta");
+select revseq("acgtagctatgctactagc");;
