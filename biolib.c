@@ -3,9 +3,7 @@ A library of bioinformatic functions
 
 Corran C. Musk 2012
 
-Functions to be implemented:
-	compliment
-	revcomp (reverse and compliment)
+Functions to be implemented (among others):
 	translateDNAtoProtein(frame) (if neg uses reverse)
 	dist
 	align
@@ -15,26 +13,31 @@ Functions to be implemented:
 #include <stdlib.h>
 
 /* ReverseFunc : reverses a string
-	requires pointer to string
+**	requires pointer to string
 */
 
 void libReverseFunc(char *str)
 {
+	// Bit clunky but it works, certainly room for improvement!
 	char *tmp_str;
 	int i,str_len;
 
+	// create a temporary space for string
 	tmp_str=malloc(strlen(str));
+	// copy original into temp
 	strcpy(tmp_str,str);
+	// get length of string
 	str_len=strlen(tmp_str)-1;
+	// for each character in the temp put in opposite position in original
 	for (i=0; i<=str_len; ++i){
 		str[i]=tmp_str[str_len-i];
 	}
+	// tidy up
 	free(tmp_str);
-
 }
 
 /* ComplimentDNAFunc : Compliments DNA, preserves case
-	requires pointer to str to be complimented
+**	requires pointer to str to be complimented
 */
 
 void libCompDNAFunc(char *str)
@@ -96,9 +99,9 @@ void libCompRevFunc(char *seq)
 
 double libcgContentFunc(unsigned char *z)
 {
-	int 			cg_count, ct, i;
-	double 			result;
-	char 			t;
+	int 	cg_count, ct, i;
+	double 	result;
+	char 	t;
 	
 	cg_count=0;
 	ct=0;
@@ -165,7 +168,7 @@ int libHammingDistFunc(unsigned char *seq1, unsigned char *seq2)
 	} else {
 		result=0;
 		for(i=0; i<strlen(seq1); i++){
-			if (toupper(seq1[i])==toupper(seq2[i])) ++result;
+			if (toupper(seq1[i])!=toupper(seq2[i])) ++result;
 		}
 	}
 	return result;

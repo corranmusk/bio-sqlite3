@@ -6,7 +6,7 @@ create temp table tblResults (test text, calc text, expect text);
 insert into tblResults select "cgcontent" as test, cgcontent("acgtagctatgctactagc") as calc, 0.473684210526316 as expect;
 insert into tblResults select "gccontent" as test, gccontent("acgtagctatgctactagc") as calc, 0.473684210526316 as expect;
 insert into tblResults select "molwt" as test, molwt("acgtagctatgctactagc") as calc, 5849.8 as expected;
-insert into tblResults select "hammingdist" as test, hammingdist("acgtagctatgctactagc","acgtagctatgctacgcta") as calc, 15 as expect;
+insert into tblResults select "hammingdist" as test, hammingdist("acgtagctatgctactagc","acgtagctatgctacgcta") as calc, 4 as expect;
 insert into tblResults select "levenshteindist" as test, levenshteindist("acgtagctatgctactagc","acgtagctatgctacgcta") as calc, 4 as expect;
 insert into tblResults select "levdist" as test, levdist("acgtagctatgctactagc","acgtagctatgctacgcta") as calc, 4 as expect;
 insert into tblResults select "revseq" as test, revseq("acgtagctatgctactagC") as calc, "Cgatcatcgtatcgatgca" as expect;

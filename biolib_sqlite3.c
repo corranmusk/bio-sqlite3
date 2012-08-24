@@ -6,24 +6,22 @@ Corran C. Musk 2012
 */
 
 #include <sqlite3ext.h>
-#include "biolib.h"
 #include <string.h>
-//#include <stdlib.h>
+#include "biolib.h"
 
 SQLITE_EXTENSION_INIT1
 
 /* cgcontent function
-  calculate the proportion of C+G of a given dna sequence
+	calculate the proportion of C+G of a given dna sequence
 */
 static void cgContentFunc(
-		sqlite3_context *context,
-		int argc,
-		sqlite3_value **argv
+	sqlite3_context *context,
+	int argc,
+	sqlite3_value **argv
 ){
 	double 		result;
 	unsigned char 	*z;
 	
-/* still need to deal with empty string */
 	switch( sqlite3_value_type(argv[0]) ){
 		case SQLITE_TEXT:{
 			z = sqlite3_malloc(sqlite3_value_bytes(argv[0])+1);
@@ -44,9 +42,9 @@ static void cgContentFunc(
   Calculates the Molecular Weight in Daltons of the specified DNA sequence
 */
 static void MolWTFunc(
-		sqlite3_context	*context,
-		int 			argc,
-		sqlite3_value 	**argv
+	sqlite3_context	*context,
+	int 			argc,
+	sqlite3_value 	**argv
 ){
 	double		result;
 	unsigned char 	*z;
@@ -69,9 +67,9 @@ static void MolWTFunc(
 
 
 static void HammingDistFunc(
-		sqlite3_context	*context,
-		int 			argc,
-		sqlite3_value 	**argv
+	sqlite3_context	*context,
+	int 			argc,
+	sqlite3_value 	**argv
 ){
 	int		result;
 	unsigned char 	*z0, *z1;
@@ -92,9 +90,9 @@ static void HammingDistFunc(
 
 
 static void LevenshteinDistFunc(
-		sqlite3_context	*context,
-		int 			argc,
-		sqlite3_value 	**argv
+	sqlite3_context	*context,
+	int 			argc,
+	sqlite3_value 	**argv
 ){
 	int		result;
 	unsigned char 	*z0, *z1;
@@ -110,9 +108,9 @@ static void LevenshteinDistFunc(
 }
 
 static void ReverseFunc(
-		sqlite3_context	*context,
-		int 			argc,
-		sqlite3_value 	**argv
+	sqlite3_context	*context,
+	int 			argc,
+	sqlite3_value 	**argv
 ){
 	unsigned char 	*z;
 	
@@ -133,9 +131,9 @@ static void ReverseFunc(
 }
 
 static void CompDNAFunc(
-		sqlite3_context	*context,
-		int 			argc,
-		sqlite3_value 	**argv
+	sqlite3_context	*context,
+	int 			argc,
+	sqlite3_value 	**argv
 ){
 	unsigned char 	*z;
 	
@@ -156,9 +154,9 @@ static void CompDNAFunc(
 }
 
 static void CompRevFunc(
-		sqlite3_context	*context,
-		int 			argc,
-		sqlite3_value 	**argv
+	sqlite3_context	*context,
+	int 			argc,
+	sqlite3_value 	**argv
 ){
 	unsigned char 	*z;
 	

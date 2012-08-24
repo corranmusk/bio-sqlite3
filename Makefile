@@ -5,6 +5,8 @@ CC=gcc
 SQLITE_OBJS= biolib.o biolib_sqlite3.o
 
 all : biolib_sqlite3 biolib.o
+
+test : biolib_sqlite3
 	sqlite3 < test.sqlite
 
 biolib_sqlite3 : $(SQLITE_OBJS)

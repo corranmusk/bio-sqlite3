@@ -4,8 +4,8 @@ CGCONTENT(seq)		Provides %content of C+G
 GCCONTENT(seq)		Alias for CGCONTENT
 MOLWT(seq)		Calculates the Molecular weight in Daltons of a DNA seq.
 HAMMINGDIST(seq,seq) 	Caluclates the Hamming distance for two sequence, returns null if sequences are different lengths
-LEVSHTIENDIST(seq,seq) 	Calculates the Levenshtein distance for a pair of sequences.
-LEVDIST(seq,seq) 	Alias for LENSHTEINDIST
+LEVENSHTIENDIST(seq,seq) Calculates the Levenshtein distance for a pair of sequences.
+LEVDIST(seq,seq) 	Alias for LEVENSHTEINDIST
 REVSEQ(seq)		Reverses a sequence
 COMPDNA(seq)		Compliments a DNA sequence;
 REVCOMP(seq)		Reverses and Compliments a DNA sequence i.e. other strand;
