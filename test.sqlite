@@ -1,6 +1,7 @@
 .load ./biolib_sqlite3
 .header ON
 .mode column
+.width 20 20 20
 create temp table tblResults (test text, calc text, expect text);
 
 insert into tblResults select "cgcontent" as test, cgcontent("acgtagctatgctactagc") as calc, 0.473684210526316 as expect;
