@@ -5,6 +5,7 @@ Corran C. Musk 2012
 */
 
 // function defs
+extern int global_align_score (char *seq1 , char *seq2);
 extern void libReverseFunc (char *str);
 extern void libCompDNAFunc (char *str);
 extern void libCompRevFunc (char *str);

@@ -11,7 +11,55 @@ Functions to be implemented (among others):
 
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
+/* defaults */
+const int GAP_PENALTY=-2;
+const int DIFF_PENALTY=-1;
+const int MATCH=4;
+const int DOWN=1;
+const int RIGHT=2;
+const int DIAG=3;
+
+int global_align_score (char *seq1 , char *seq2)
+{
+	int seq1len,seq2len;
+	int i,j;
+	int a,b,c;
+	
+	seq1len=strlen(seq1);
+	seq2len=strlen(seq2);
+	
+	int scores[seq1len+1][seq2len+1];
+	for(i=0;i<seq1len;i++){
+		for(j=0; j<seq2len;j++){
+			if(i==0){
+				scores[i][j]=j * GAP_PENALTY;
+			} else if (j==0){
+				scores[i][j]=i * GAP_PENALTY;
+			} else {
+				a=scores[i-1][j-1];
+				if (seq1[i]==seq2[j]) {
+					a+=MATCH;
+				} else {
+					a+=DIFF_PENALTY;
+				}
+				b=scores[i-1][j] + GAP_PENALTY;
+				c=scores[i][j-1] + GAP_PENALTY;
+				if (a>b) {
+					if (a>c){
+						scores[i][j]=a;
+					} else {
+						scores[i][j]=c;
+					}
+				} else {
+					scores[i][j]=b;
+				}
+			}
+		}
+	}
+	return scores[i][j];
+}
 /* ReverseFunc : reverses a string
 **	requires pointer to string
 */
@@ -156,7 +204,7 @@ double libMolWTFunc(unsigned char *sequence)
 	returns -1 if strings are different lengths otherwise calculates Hamming distance
 */
 
-int libHammingDistFunc(unsigned char *seq1, unsigned char *seq2)
+int libHammingDistFunc(char *seq1, char *seq2)
 {
 
 	int 	result,i;
