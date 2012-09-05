@@ -1,5 +1,5 @@
 /* BioLIb
-A library of bioinformatic functions
+A library of bioinformatics functions
 
 Corran C. Musk 2012
 
@@ -31,12 +31,15 @@ int global_align_score (char *seq1 , char *seq2)
 	seq2len=strlen(seq2);
 	
 	int scores[seq1len+1][seq2len+1];
+	int dirs[seq1len+1][seq2len+1];
 	for(i=0;i<seq1len;i++){
 		for(j=0; j<seq2len;j++){
 			if(i==0){
 				scores[i][j]=j * GAP_PENALTY;
+				dirs[i][j]=DOWN;
 			} else if (j==0){
 				scores[i][j]=i * GAP_PENALTY;
+				dirs[i][j]=RIGHT;
 			} else {
 				a=scores[i-1][j-1];
 				if (seq1[i]==seq2[j]) {
@@ -49,11 +52,14 @@ int global_align_score (char *seq1 , char *seq2)
 				if (a>b) {
 					if (a>c){
 						scores[i][j]=a;
-					} else {
-						scores[i][j]=c;
+						dirs[i][j]=DIAG;
 					}
-				} else {
+				} else if (b>c) {
 					scores[i][j]=b;
+					dirs[i][j]=RIGHT;
+				} else {
+					scores[i][j]=c;
+					dirs[i][j]=DOWN;
 				}
 			}
 		}
@@ -266,4 +272,3 @@ int libLevenshteinDistFunc (char *seq1, char *seq2) {
 		return current[ la ];
 	}
 }
-
