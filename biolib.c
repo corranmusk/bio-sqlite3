@@ -12,60 +12,17 @@ Functions to be implemented (among others):
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdio.h>
 
 /* defaults */
-const int GAP_PENALTY=-2;
-const int DIFF_PENALTY=-1;
-const int MATCH=4;
-const int DOWN=1;
-const int RIGHT=2;
-const int DIAG=3;
+const int GAP_PENALTY=-1;
+const int DIFF_PENALTY=1;
+const int MATCH_SCORE=2;
+const unsigned int DOWN=1;
+const unsigned int RIGHT=2;
+const unsigned int DIAG=3;
 
-int global_align_score (char *seq1 , char *seq2)
-{
-	int seq1len,seq2len;
-	int i,j;
-	int a,b,c;
-	
-	seq1len=strlen(seq1);
-	seq2len=strlen(seq2);
-	
-	int scores[seq1len+1][seq2len+1];
-	int dirs[seq1len+1][seq2len+1];
-	for(i=0;i<seq1len;i++){
-		for(j=0; j<seq2len;j++){
-			if(i==0){
-				scores[i][j]=j * GAP_PENALTY;
-				dirs[i][j]=DOWN;
-			} else if (j==0){
-				scores[i][j]=i * GAP_PENALTY;
-				dirs[i][j]=RIGHT;
-			} else {
-				a=scores[i-1][j-1];
-				if (seq1[i]==seq2[j]) {
-					a+=MATCH;
-				} else {
-					a+=DIFF_PENALTY;
-				}
-				b=scores[i-1][j] + GAP_PENALTY;
-				c=scores[i][j-1] + GAP_PENALTY;
-				if (a>b) {
-					if (a>c){
-						scores[i][j]=a;
-						dirs[i][j]=DIAG;
-					}
-				} else if (b>c) {
-					scores[i][j]=b;
-					dirs[i][j]=RIGHT;
-				} else {
-					scores[i][j]=c;
-					dirs[i][j]=DOWN;
-				}
-			}
-		}
-	}
-	return scores[i][j];
-}
+
 /* ReverseFunc : reverses a string
 **	requires pointer to string
 */
@@ -271,4 +228,88 @@ int libLevenshteinDistFunc (char *seq1, char *seq2) {
 		}
 		return current[ la ];
 	}
+}
+
+int global_align_score (char *seq1 , char *seq2, char *alignseq)
+{
+	int seq1len,seq2len;
+	int i,j;
+	int a,b,c;
+	int result;
+	
+	seq1len=strlen(seq1);
+	seq2len=strlen(seq2);
+	
+	int scores[seq1len+1][seq2len+1];
+	scores[0][0]=0;
+	unsigned int dirs[seq1len+1][seq2len+1];
+	for(i=0;i<=seq1len;i++){
+		for(j=0; j<=seq2len;j++){
+			if(i==0){
+				scores[0][j]=j * GAP_PENALTY;
+				dirs[0][j]=DOWN;
+			}
+			if (j==0){
+				scores[i][0]=i * GAP_PENALTY;
+				dirs[i][0]=RIGHT;
+			}  
+			if((j!=0) && (i!=0)){
+				a=scores[i-1][j-1];
+				if (toupper(seq1[i])==toupper(seq2[j])) {
+					a+=MATCH_SCORE;
+				} else {
+					a+=DIFF_PENALTY;
+				}
+				b=scores[i-1][j] + GAP_PENALTY;
+				c=scores[i][j-1] + GAP_PENALTY;
+				if ((a>b) && (a>c)){
+					scores[i][j]=a;
+					dirs[i][j]=DIAG;
+				} else {
+					if ((b>c) && (b>a)){
+						scores[i][j]=b;
+						dirs[i][j]=RIGHT;
+					} else {
+						scores[i][j]=c;
+						dirs[i][j]=DOWN;
+					}
+				}
+			}
+		}
+	}
+	dirs[0][0]=0;
+	i--;
+	j--;
+	result=scores[i][j];
+	/*char retseq1[i+j];
+	char retseq2[i+j];*/
+	//unsigned char alignseq[i+j];
+	int seqpos=0;
+	do
+	{
+		switch (dirs[i][j]){
+			case 1:		//DOWN
+				j--;
+				alignseq[seqpos]=tolower(seq2[j]);
+				break;
+			case 2:		//RIGHT
+				i--;
+				alignseq[seqpos]=tolower(seq2[i]);
+				break;
+			case 3:		//DIAG
+				i--;
+				j--;
+				if (seq1[i]==seq2[j]){
+					//match
+					alignseq[seqpos]=toupper(seq2[j]);					
+				} else {
+					//mismatch
+					alignseq[seqpos]='*';
+				}
+				break;
+		}
+		seqpos++;
+	} while (i>0 && j>0);
+	libReverseFunc(alignseq);
+	return result;
 }
