@@ -65,6 +65,10 @@ static void MolWTFunc(
 	}
 }
 
+/* HammingDistFunc
+ * Calculates the Hamming distance between two strings
+ * Strings must be of same length otherwise returns -1
+*/
 
 static void HammingDistFunc(
 	sqlite3_context	*context,
@@ -176,6 +180,30 @@ static void CompRevFunc(
 	}
 }
 
+/* GlobalAlignScore func
+ * Calculate the score of a global alignment opf two sequences
+ */
+ 
+static void GlobalAlignScoreFunc(
+	sqlite3_context	*context,
+	int 			argc,
+	sqlite3_value 	**argv
+){
+	int		result;
+	unsigned char 	*z0, *z1, *al;
+	
+	z0 = sqlite3_malloc(sqlite3_value_bytes(argv[0])+1);
+	strcpy((char*)z0,(char*)sqlite3_value_text(argv[0]));
+	z1 = sqlite3_malloc(sqlite3_value_bytes(argv[1])+1);
+	strcpy((char*)z1,(char*)sqlite3_value_text(argv[1]));
+	al =sqlite3_malloc(sqlite3_value_bytes(argv[0])+sqlite3_value_bytes(argv[1])+1);
+	result=libGlobalAlign(z0,z1,al);
+	sqlite3_result_int(context, result);
+	sqlite3_free(z0);
+	sqlite3_free(z1);
+	sqlite3_free(al);
+}
+
 
 /* SQLite invokes this routine once when it loads the extension.
 ** Create new functions, collating sequences, and virtual table
@@ -200,6 +228,7 @@ int sqlite3_extension_init(
 	sqlite3_create_function(db, "revseq", 1, SQLITE_ANY, 0, ReverseFunc, 0, 0);
 	sqlite3_create_function(db, "compDNA", 1, SQLITE_ANY, 0, CompDNAFunc, 0, 0);
 	sqlite3_create_function(db, "comprev", 1, SQLITE_ANY, 0, CompRevFunc, 0, 0);
+	sqlite3_create_function(db, "globalalignscore", 2, SQLITE_ANY, 0, GlobalAlignScoreFunc, 0, 0);
 	
 	return 0;
 }

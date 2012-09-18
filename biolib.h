@@ -12,5 +12,5 @@ extern double libcgContentFunc (unsigned char *sequence);
 extern double libMolWTFunc (unsigned char *sequence);
 extern int libHammingDistFunc (unsigned char *seq1, unsigned char *seq2);
 extern int libLevenshteinDistFunc (char *seq1, char *seq2);
-extern int global_align_score (char *seq1 , char *seq2, char *alignseq);
+extern int libGlobalAlign (char *seq1 , char *seq2, char *alignseq);
 

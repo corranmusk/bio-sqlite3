@@ -22,7 +22,7 @@ int main() {
 	printf("Sequence 2: %s\n",seq2);
 	int_result=libLevenshteinDistFunc(seq1,seq2);
 	printf("Levenshtein distance : %d\n",int_result);
-	int_result=global_align_score(seq1,seq2,align);
+	int_result=libGlobalAlign(seq1,seq2,align);
 	printf("Global align score : %d\n",int_result);
 	printf("Alignment %s\n",align);
 

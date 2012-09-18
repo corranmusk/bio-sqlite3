@@ -16,11 +16,11 @@ Functions to be implemented (among others):
 
 /* defaults */
 const int GAP_PENALTY=-1;
-const int DIFF_PENALTY=1;
+const int DIFF_PENALTY=-1;
 const int MATCH_SCORE=2;
 const unsigned int DOWN=1;
 const unsigned int RIGHT=2;
-const unsigned int DIAG=3;
+const unsigned int DIAG=4;
 
 
 /* ReverseFunc : reverses a string
@@ -230,7 +230,7 @@ int libLevenshteinDistFunc (char *seq1, char *seq2) {
 	}
 }
 
-int global_align_score (char *seq1 , char *seq2, char *alignseq)
+int libGlobalAlign (char *seq1 , char *seq2, char *alignseq)
 {
 	int seq1len,seq2len;
 	int i,j;
@@ -262,11 +262,11 @@ int global_align_score (char *seq1 , char *seq2, char *alignseq)
 				}
 				b=scores[i-1][j] + GAP_PENALTY;
 				c=scores[i][j-1] + GAP_PENALTY;
-				if ((a>b) && (a>c)){
+				if ((a>=b) && (a>=c)){
 					scores[i][j]=a;
 					dirs[i][j]=DIAG;
 				} else {
-					if ((b>c) && (b>a)){
+					if (b>c){
 						scores[i][j]=b;
 						dirs[i][j]=RIGHT;
 					} else {
@@ -296,7 +296,7 @@ int global_align_score (char *seq1 , char *seq2, char *alignseq)
 				i--;
 				alignseq[seqpos]=tolower(seq2[i]);
 				break;
-			case 3:		//DIAG
+			case 4:		//DIAG
 				i--;
 				j--;
 				if (seq1[i]==seq2[j]){
