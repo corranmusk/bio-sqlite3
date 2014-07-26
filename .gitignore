@@ -1,0 +1,3 @@
+*.o
+biolib_sqlite3
+biolib_test
